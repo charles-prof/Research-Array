@@ -1,7 +1,7 @@
 import * as Y from 'yjs';
 import { IndexeddbPersistence } from 'y-indexeddb';
 import { WebrtcProvider } from 'y-webrtc';
-import { Paper } from '../types';
+import type { Paper } from '../types';
 
 const doc = new Y.Doc();
 // In a real environment, you'd handle provider cleanup, but for Phase 1 this is the base.
