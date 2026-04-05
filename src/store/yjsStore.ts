@@ -12,6 +12,38 @@ if (typeof window !== 'undefined') {
 
 const yPapers = doc.getArray<Paper>('papers');
 
+const samplePapers: Paper[] = [
+  {
+    id: '1',
+    title: 'Quantum Advantage in 2026',
+    author: 'Internal Team',
+    year: 2026,
+    description: 'Core breakthrough in error correction.',
+    trl: 4,
+    impact: 85,
+    marketValue: '$15B',
+    citations: 120,
+    source: 'Internal'
+  },
+  {
+    id: '2',
+    title: 'Competitor Q-Bit Scaling',
+    author: 'Google Research',
+    year: 2025,
+    description: 'Scaled to 1000 qubits but high error rates.',
+    trl: 6,
+    impact: 60,
+    marketValue: '$10B',
+    citations: 450,
+    source: 'Competitor: Google'
+  }
+];
+
+// Initialize with sample data if empty
+if (yPapers.length === 0) {
+  yPapers.push(samplePapers);
+}
+
 export const getYjsDoc = () => doc;
 
 export const addPaper = (paper: Paper) => {
