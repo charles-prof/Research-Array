@@ -1,10 +1,10 @@
 import * as Y from 'yjs';
 import { IndexeddbPersistence } from 'y-indexeddb';
 import { WebrtcProvider } from 'y-webrtc';
+import { create } from 'zustand';
 import type { Paper } from '../types';
 
 const doc = new Y.Doc();
-// In a real environment, you'd handle provider cleanup, but for Phase 1 this is the base.
 if (typeof window !== 'undefined') {
   new IndexeddbPersistence('research-array-db', doc);
   new WebrtcProvider('research-array-room', doc);
@@ -39,10 +39,30 @@ const samplePapers: Paper[] = [
   }
 ];
 
-// Initialize with sample data if empty
 if (yPapers.length === 0) {
   yPapers.push(samplePapers);
 }
+
+interface StoreState {
+  papers: Paper[];
+  addPaper: (paper: Paper) => void;
+  sync: () => void;
+}
+
+export const useStore = create<StoreState>((set) => ({
+  papers: yPapers.toArray(),
+  addPaper: (paper: Paper) => {
+    yPapers.push([paper]);
+  },
+  sync: () => {
+    set({ papers: yPapers.toArray() });
+  }
+}));
+
+// Automatically sync the store when Yjs changes
+yPapers.observe(() => {
+  useStore.getState().sync();
+});
 
 export const getYjsDoc = () => doc;
 

@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { getPapers, observePapers, addPaper } from '../store/yjsStore';
+import React, { useState } from 'react';
+import { useStore } from '../store/yjsStore';
 import type { Paper } from '../types';
 
 export const LibraryPane: React.FC = () => {
-  const [papers, setPapers] = useState<Paper[]>(getPapers());
+  const papers = useStore(state => state.papers);
+  const addPaper = useStore(state => state.addPaper);
   const [title, setTitle] = useState('');
-
-  useEffect(() => {
-    observePapers(() => setPapers(getPapers()));
-  }, []);
 
   const handleAdd = (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,11 +13,14 @@ export const LibraryPane: React.FC = () => {
     addPaper({
       id: crypto.randomUUID(),
       title: title.trim(),
-      author: 'Unknown',
+      author: 'Internal Team',
       year: new Date().getFullYear(),
       description: '',
       trl: 1,
-      impact: 0
+      impact: 0,
+      marketValue: '$0B',
+      citations: 0,
+      source: 'Internal'
     });
     setTitle('');
   };
